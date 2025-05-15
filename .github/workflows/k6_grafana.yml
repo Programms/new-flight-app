@@ -1,17 +1,20 @@
-name: MacOS Workflow
-on: [push]
+name: k6 Load Test
+
+on:
+  push:
+    branches:
+      - '**'
 
 jobs:
-  k6_local_test:
-    name: k6 local test on macos
+  run-test:
     runs-on: macos-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
-      - name: Install k6 by homebrew
-        run: brew install k6
-
-      - name: Local k6 test
-        run: k6 run k6-grafana.js
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1
+        with:
+          path: k6-grafana.js
